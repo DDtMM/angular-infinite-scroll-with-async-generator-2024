@@ -7,6 +7,8 @@
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
+          "changeDetection": "OnPush",
+          "flat": true,
           "inlineTemplate": true,
           "inlineStyle": true,
           "style": "scss",
@@ -121,5 +123,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": false
   }
 }
