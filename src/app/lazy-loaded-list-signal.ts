@@ -1,13 +1,14 @@
-import { Signal, WritableSignal, computed, signal, untracked } from '@angular/core';
-
-
+import { Signal, computed, signal, untracked } from '@angular/core';
 
 export function lazyLoadedListSignal<T>(
-  generator: AsyncIterator<T> | Iterator<T>,
+  source: Iterable<T> | AsyncIterable<T> | AsyncIterator<T> | Iterator<T>,
   options?: LazyLoadedListSignalOptions
 ): LazyLoadedListSignal<T> {
   const defaultSize = options?.defaultBatchSize || 1;
   const state = signal<InternalState<T>>({ kind: 'value', value: [] });
+  const iterator = Symbol.iterator in source ? source[Symbol.iterator]()
+    : Symbol.asyncIterator in source ? source[Symbol.asyncIterator]()
+    : source;
 
   loadItems(defaultSize); // set initial items
 
@@ -32,7 +33,7 @@ export function lazyLoadedListSignal<T>(
     const nextValue = [...currentValue];
     try {
       for (let i = 0; i < count; i++) {
-        const item = await generator.next();
+        const item = await iterator.next();
         if (item.done) {
           state.update((s) => ({ ...s, kind: 'done', value: nextValue }));
           break;

@@ -29,7 +29,7 @@ const SURNAMES = [
 
 function sampleDataFactory(index: number): SampleData {
   return {
-    imgUrl: `https://picsum.photos/seed/${index}/200`,
+    imgUrl: `https://picsum.photos/seed/${index + 1}/200`,
     name: `${GIVEN_NAMES[Math.floor(Math.random() * GIVEN_NAMES.length)]} ${SURNAMES[Math.floor(Math.random() * SURNAMES.length)]}`,
     price: Math.floor(Math.random() * 1000)
   }
@@ -47,24 +47,20 @@ export class DataService {
   private readonly responseDelay = 2000;
 
   getInventoryFromArray(pageIndex: number, pageSize: number): SampleData[] {
-    return (pageIndex * pageSize > this.maxItems)
-      ? []
-      : Array(pageSize).fill(0).map((_, i) => sampleDataFactory(pageSize * pageIndex + i + 1));
+    return this.getPageItems(pageSize, pageSize * pageIndex, sampleDataFactory);
   }
 
   getInventoryFromObservable(pageIndex: number, pageSize: number): Observable<SampleData[]> {
-    return (pageIndex * pageSize > this.maxItems)
-      ? of([])
-      : of(Array(pageSize).fill(0).map((_, i) => sampleDataFactory(pageSize * pageIndex + i + 1)))
-        .pipe(delay(this.responseDelay));
+    return of(this.getPageItems(pageSize, pageSize * pageIndex, sampleDataFactory)).pipe(delay(this.responseDelay));
   }
 
   getInventoryFromPromise(pageIndex: number, pageSize: number): Promise<SampleData[]> {
-    return (pageIndex * pageSize > this.maxItems)
-      ? new Promise(r => r([]))
-      : new Promise(r => setTimeout(() =>
-        r(Array(pageSize).fill(0).map((_, i) => sampleDataFactory(pageSize * pageIndex + i + 1))), this.responseDelay));
+    return new Promise(r => setTimeout(() => r(this.getPageItems(pageSize, pageSize * pageIndex, sampleDataFactory)), this.responseDelay));
+  }
 
+  private getPageItems<T>(desiredLength: number, startIndex: number, factoryFn: (index: number) => T): T[] {
+    const length = Math.max(0, Math.min(desiredLength, this.maxItems - startIndex));
+    return Array(length).fill(0).map((_, i) => factoryFn(i));
   }
 }
 

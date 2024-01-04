@@ -1,3 +1,20 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
+
+
+  .infinite-scroll-host {
+    >.items {
+      @apply grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 items-center content-center place-items-center gap-5 mb-5;
+      >.item {
+        @apply border-4 p-3 border-primary rounded-md bg-primary text-primary-content shadow-lg;
+      }
+    }
+    >.loading-outer {
+      @apply text-center p-3;
+      >.loading-inner {
+        @apply loading loading-dots loading-lg;
+      }
+    }
+  }
+
