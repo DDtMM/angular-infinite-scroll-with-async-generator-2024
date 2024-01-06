@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "angular-generator-tricks": {
+    "angular-infinite-scroll-with-async-generator-2024": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -43,7 +43,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/angular-generator-tricks",
+            "outputPath": "dist/angular-infinite-scroll-with-async-generator-2024",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -88,10 +88,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "angular-generator-tricks:build:production"
+              "buildTarget": "angular-infinite-scroll-with-async-generator-2024:build:production"
             },
             "development": {
-              "buildTarget": "angular-generator-tricks:build:development"
+              "buildTarget": "angular-infinite-scroll-with-async-generator-2024:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -99,7 +99,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "angular-generator-tricks:build"
+            "buildTarget": "angular-infinite-scroll-with-async-generator-2024:build"
           }
         },
         "test": {

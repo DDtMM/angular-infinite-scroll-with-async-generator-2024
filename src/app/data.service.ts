@@ -43,7 +43,7 @@ export interface SampleData {
   providedIn: 'root'
 })
 export class DataService {
-  private readonly maxItems = 100;
+  private readonly maxItems = 9999;
   private readonly responseDelay = 2000;
 
   getInventoryFromArray(pageIndex: number, pageSize: number): SampleData[] {

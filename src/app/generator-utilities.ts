@@ -16,3 +16,13 @@ export async function* pagedDataToGenerator<T>(
     currentPage++;
   } while (data.length > 0);
 }
+
+
+/** In FireFox stream is already an AsyncIterable, but we need this for others. */
+export async function *streamGenerator<T, U extends Iterable<T>>(s: ReadableStream<U>) {
+  const reader = s.getReader();
+  let res: ReadableStreamReadResult<U>;
+  while (!(res = await reader.read()).done) {
+    yield* res.value;
+  }
+}

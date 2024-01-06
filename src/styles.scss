@@ -3,18 +3,35 @@
 @import 'tailwindcss/utilities';
 
 
-  .infinite-scroll-host {
-    >.items {
-      @apply grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 items-center content-center place-items-center gap-5 mb-5;
-      >.item {
-        @apply border-4 p-3 border-primary rounded-md bg-primary text-primary-content shadow-lg;
-      }
-    }
-    >.loading-outer {
-      @apply text-center p-3;
-      >.loading-inner {
-        @apply loading loading-dots loading-lg;
-      }
+.infinite-scroll-host {
+  >.items {
+    @apply grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 items-center content-center place-items-center gap-5 mb-5;
+    >.item {
+      @apply border-4 p-3 border-primary rounded-md bg-primary text-primary-content shadow-lg;
     }
   }
+  >.loading-outer {
+    @apply text-center p-3;
+    >.loading-inner {
+      @apply loading loading-dots loading-lg;
+    }
+  }
+}
 
+@layer base {
+  .grid-cols-16 {
+    grid-template-columns: repeat(16, minmax(0, 1fr));
+  }
+  .grid-cols-32 {
+    grid-template-columns: repeat(32, minmax(0, 1fr));
+  }
+}
+.file-contents.infinite-scroll-host {
+  @apply p-1;
+  >.items {
+    @apply grid grid-cols-8 md:grid-cols-16 lg:grid-cols-32 items-center content-center place-items-center gap-1 mb-5;
+    >.item {
+      @apply border-2 p-1 border-primary rounded-md bg-secondary text-secondary-content shadow-lg w-full text-center;
+    }
+  }
+}

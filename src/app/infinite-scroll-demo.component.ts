@@ -3,14 +3,16 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { AfterViewInitDirective } from './after-view-init.directive';
 import { lazyLoadedListSignal } from './lazy-loaded-list-signal';
 import { DataService } from './data.service';
-import { pagedDataToGenerator } from './paged-data-to-generator';
+import { pagedDataToGenerator } from './generator-utilities';
 
 @Component({
-  selector: 'app-endless-scroll-demo',
+  selector: 'app-infinite-scroll-demo',
   standalone: true,
   imports: [AfterViewInitDirective, CommonModule],
   template: `
-<div class="text-3xl uppercase text-purple-600 p-6">Art Catalog</div>
+<div class="text-3xl uppercase text-purple-600 p-6">
+  Art Catalog
+</div>
 <div class="infinite-scroll-host">
   <div class="items">
     @for(x of items().value; track $index) {
@@ -31,14 +33,10 @@ import { pagedDataToGenerator } from './paged-data-to-generator';
   }
 </div>
   `,
-  styles: ``,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class EndlessScrollDemoComponent {
+export class InfiniteScrollDemoComponent {
   private readonly dataSvc = inject(DataService);
-  private readonly itemsGenerator = pagedDataToGenerator((pageIndex) => this.dataSvc.getInventoryFromPromise(pageIndex, 36));
+  private readonly itemsGenerator = pagedDataToGenerator((pageIndex) => this.dataSvc.getInventoryFromObservable(pageIndex, 36));
   items = lazyLoadedListSignal(this.itemsGenerator, { defaultBatchSize: 24 });
-
-  //items = lazyLoadedListSignal(this.dataSvc.getInventoryFromArray(0, 300), { defaultBatchSize: 12 });
 }
-
