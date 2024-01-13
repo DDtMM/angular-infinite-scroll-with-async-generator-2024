@@ -43,7 +43,7 @@ jobs:
         run: npm ci --force
 
       - name: Build  site
-        run: npx ng build --base-href /dubious-signal-practices/
+        run: npx ng build --base-href /angular-infinite-scroll-with-async-generator-2024/
 
       # There is no url rewrite on github pages - so we have to copy the index page to 404.html.
       - name: Make 404 page from Index.
