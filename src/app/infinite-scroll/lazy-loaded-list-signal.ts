@@ -4,13 +4,11 @@ export function lazyLoadedListSignal<T>(
   source: Iterable<T> | AsyncIterable<T> | AsyncIterator<T> | Iterator<T>,
   options?: LazyLoadedListSignalOptions
 ): LazyLoadedListSignal<T> {
-  const defaultSize = options?.defaultBatchSize || 1;
+  const defaultSize = options?.defaultBatchSize ?? 1;
   const state = signal<InternalState<T>>({ kind: 'value', value: [] });
-  const iterator = Symbol.iterator in source ? source[Symbol.iterator]()
-    : Symbol.asyncIterator in source ? source[Symbol.asyncIterator]()
-    : source;
+  let iterator: AsyncIterator<T> | Iterator<T>;
 
-  loadItems(defaultSize); // set initial items
+  setIterator(source);
 
   const output = computed<LazyLoadedListState<T>>(() => {
     const { error, kind, value } = state();
@@ -21,6 +19,7 @@ export function lazyLoadedListSignal<T>(
   }) as LazyLoadedListSignal<T>;
 
   output.load = (batchSize?: number) => loadItems(batchSize || defaultSize);
+  output.set = setIterator;
   return output;
 
   /* loads the next batch of items. */
@@ -45,6 +44,14 @@ export function lazyLoadedListSignal<T>(
       state.update((s) => ({ ...s, error, kind: 'error', value: nextValue }));
     }
   }
+
+  /** sets the iterator and begins the initial load. */
+  function setIterator(source: Iterable<T> | AsyncIterable<T> | AsyncIterator<T> | Iterator<T>): void {
+    iterator = Symbol.iterator in source ? source[Symbol.iterator]()
+      : Symbol.asyncIterator in source ? source[Symbol.asyncIterator]()
+      : source;
+    loadItems(defaultSize); // set initial items
+  }
 }
 
 type InternalStateKind = 'done' | 'error' | 'loading' | 'value';
@@ -65,4 +72,6 @@ export interface LazyLoadedListSignalOptions {
 export type LazyLoadedListSignal<T> = Signal<LazyLoadedListState<T>> & {
   /** Loads the next batch of items.  If no size is given then defaultBatchSize */
   load(batchSize?: number): void;
+  /** Sets the iterator. */
+  set(source: Iterable<T> | AsyncIterable<T> | AsyncIterator<T> | Iterator<T>): void;
 };

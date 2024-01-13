@@ -44,7 +44,7 @@ export interface SampleData {
 })
 export class DataService {
   private readonly maxItems = 9999;
-  private readonly responseDelay = 2000;
+  private readonly responseDelay = 30;
 
   getInventoryFromArray(pageIndex: number, pageSize: number): SampleData[] {
     return this.getPageItems(pageSize, pageSize * pageIndex, sampleDataFactory);

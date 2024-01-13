@@ -2,22 +2,6 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
-
-.infinite-scroll-host {
-  >.items {
-    @apply grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 items-center content-center place-items-center gap-5 mb-5;
-    >.item {
-      @apply border-4 p-3 border-primary rounded-md bg-primary text-primary-content shadow-lg;
-    }
-  }
-  >.loading-outer {
-    @apply text-center p-3;
-    >.loading-inner {
-      @apply loading loading-dots loading-lg;
-    }
-  }
-}
-
 @layer base {
   .grid-cols-16 {
     grid-template-columns: repeat(16, minmax(0, 1fr));
@@ -26,9 +10,39 @@
     grid-template-columns: repeat(32, minmax(0, 1fr));
   }
 }
-.file-contents.infinite-scroll-host {
+.infinite-scroll-host {
+
+  >.loading-outer {
+    @apply text-center p-3;
+    >.loading-inner {
+      @apply loading loading-dots loading-lg;
+    }
+  }
+}
+.file-lines .infinite-scroll-host {
+  >.items {
+    @apply px-2;
+    >.item {
+      @apply block py-1 px-3 bg-neutral text-neutral-content;
+    }
+    >.item:nth-of-type(odd) {
+      @apply bg-info text-info-content;
+    }
+  }
+}
+.art-store .infinite-scroll-host {
+  >.items {
+    @apply grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 items-center content-center place-items-center gap-5 mb-5;
+    >.item {
+      @apply border-4 p-3 border-primary rounded-md bg-primary text-primary-content shadow-lg;
+    }
+  }
+}
+
+.file-contents .infinite-scroll-host {
   @apply p-1;
   >.items {
+    font-family: Lucida, Monaco, monospace;
     @apply grid grid-cols-8 md:grid-cols-16 lg:grid-cols-32 items-center content-center place-items-center gap-1 mb-5;
     >.item {
       @apply border-2 p-1 border-primary rounded-md bg-secondary text-secondary-content shadow-lg w-full text-center;
